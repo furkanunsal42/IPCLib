@@ -101,7 +101,7 @@ void main_child(char* argv[]) {
 }
 ```
 # C# Example
-```cs
+```csharp 
 public static void Main(string[] args)
 {
     Event e = new Event();
