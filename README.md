@@ -19,7 +19,8 @@ void main_parent() {
 
 	STARTUPINFO start_info = { sizeof(start_info) };
 	PROCESS_INFORMATION proc_info = { 0 };
-	::CreateProcessW(L"executable.exe", &command[0], nullptr, nullptr, true, CREATE_NEW_CONSOLE, nullptr, nullptr, &start_info, &proc_info);
+	::CreateProcessW(L"executable.exe", &command[0], nullptr, nullptr, true,
+		 CREATE_NEW_CONSOLE, nullptr, nullptr, &start_info, &proc_info);
 	::CloseHandle(proc_info.hThread);
 	::CloseHandle(proc_info.hProcess);
 
@@ -27,7 +28,10 @@ void main_parent() {
 	pipe_write.close_read();
 	pipe_write.set_event_trigger_condition(Pipe::W);
 
-	std::cout << "Parent: my rp:" << pipe_read << " wp:" << pipe_write << " event:" << *pipe_write.get_io_event() << " event_external:" << event_external << std::endl;
+	std::cout << "Parent: my rp:" << pipe_read <<
+			" wp:" << pipe_write <<
+			" event:" << *pipe_write.get_io_event() <<
+			" event_external:" << event_external << std::endl;
 
 	event_external.add_listener([&pipe_read, &pipe_write]() {
 		std::string message;
@@ -70,7 +74,10 @@ void main_child(char* argv[]) {
 	
 	pipe_write.set_event_trigger_condition(Pipe::WRITE);
 
-	std::cout << "Child: my rp:" << pipe_read << " wp:" << pipe_write << " event:" << *pipe_write.get_io_event() << " event_external:" << event_external << std::endl;
+	std::cout << "Child: my rp:" << pipe_read <<
+		" wp:" << pipe_write <<
+		" event:" << *pipe_write.get_io_event() <<
+		" event_external:" << event_external << std::endl;
 	
 	event_external.add_listener([&pipe_read, &pipe_write]() {
 		std::string message;
