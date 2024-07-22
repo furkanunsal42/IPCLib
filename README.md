@@ -1,5 +1,5 @@
 # IPCLib
-Interprocess Communication Library for C, C++ and C# using anonymous pipes and events, supporting Windows and Linux
+Interprocess Communication Library for C, C++, C# and Python using anonymous pipes and events, supporting Windows and Linux
 # CPP Example
 ```cpp
 void main_parent() {
