@@ -1,0 +1,10 @@
+
+/.vs
+/ipclib/.vs
+*.tlog
+*.obj
+*.json
+*.pdb
+/ipclibcs/obj
+/x64/Debug
+/x64
