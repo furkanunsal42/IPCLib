@@ -136,17 +136,17 @@ pipe_io_op_result ipc_api pipe_update(void* pipe, const void* source_buffer, siz
     return *(pipe_io_op_result*)&r;
 }
 
-intptr_t pipe_get_io_event(void* pipe)
+intptr_t ipc_api pipe_get_io_event(void* pipe)
 {
     return (intptr_t)((Pipe*)pipe)->get_io_event().get();
 }
 
-void pipe_set_io_event(void* pipe, void* external_event)
+void ipc_api pipe_set_io_event(void* pipe, void* external_event)
 {
     ((Pipe*)pipe)->set_io_event(std::shared_ptr<Event>((Event*)external_event));
 }
 
-void pipe_set_event_trigger_condition(void* pipe, int condition_flags)
+void ipc_api pipe_set_event_trigger_condition(void* pipe, int condition_flags)
 {
     ((Pipe*)pipe)->set_event_trigger_condition(condition_flags);
 }

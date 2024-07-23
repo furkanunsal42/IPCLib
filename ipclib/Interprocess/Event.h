@@ -77,7 +77,7 @@ private:
 
 	Event::handle_t _handle;
 	reset_type type;
-	bool _is_event_open;
+	bool _is_event_open = false;
 	bool _is_event_owned = false;
 
 	const uint32_t _listener_check_period_ms = 1;

@@ -44,7 +44,7 @@
     <ClInclude Include="Interprocess\ProcessHandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interprocess\Debuger.h">
+    <ClInclude Include="Interprocess\IPCAssert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Interprocess\ProcessHandleInterface.h">

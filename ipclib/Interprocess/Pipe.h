@@ -133,8 +133,8 @@ public:
 
 private:
 
-	Pipe::handle_t  _handle_read;
-	Pipe::handle_t  _handle_write;
+	Pipe::handle_t  _handle_read = 0;
+	Pipe::handle_t  _handle_write = 0;
 
 	bool _is_read_open = false;
 	bool _is_write_open = false;

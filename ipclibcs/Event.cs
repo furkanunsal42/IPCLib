@@ -1,12 +1,7 @@
 ﻿global using event_handle_t = System.IntPtr;
-global using event_t = System.IntPtr;
+global using event_t = System.UIntPtr;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ipclibcs
 {
@@ -28,49 +23,53 @@ namespace ipclibcs
 
         #region C API
         [DllImport("ipclib.dll")]
-        public static extern event_t event_create();
+        private static extern event_t event_create();
         [DllImport("ipclib.dll")]
-        public static extern event_t event_create_r(reset_type type);
+        private static extern event_t event_create_r(reset_type type);
         [DllImport("ipclib.dll")]
-        public static extern event_t event_create_h(event_handle_t handle);
+        private static extern event_t event_create_h(event_handle_t handle);
         [DllImport("ipclib.dll")]
-        public static extern event_t event_create_s(size_t handle);
+        private static extern event_t event_create_s(size_t handle);
 
         [DllImport("ipclib.dll")]
-        public static extern void event_destroy(event_t event_variable);
+        private static extern void event_destroy(event_t event_variable);
 
         [DllImport("ipclib.dll")]
-        public static extern void event_set_ownership(event_t event_variable, bool is_event_handle_owned);
+        private static extern void event_set_ownership(event_t event_variable, bool is_event_handle_owned);
         [DllImport("ipclib.dll")]
-        public static extern bool event_close(event_t event_variable);
+        private static extern bool event_close(event_t event_variable);
 
         [DllImport("ipclib.dll")]
-        public static extern bool event_set(event_t event_variable);
+        private static extern bool event_set(event_t event_variable);
         [DllImport("ipclib.dll")]
-        public static extern bool event_reset(event_t event_variable);
+        private static extern bool event_reset(event_t event_variable);
 
         [DllImport("ipclib.dll")]
-        public static extern wait_op_return event_wait(event_t event_variable);
+        private static extern wait_op_return event_wait(event_t event_variable);
         [DllImport("ipclib.dll")]
-        public static extern wait_op_return event_wait_timeout(event_t event_variable, int milliseconds);
+        private static extern wait_op_return event_wait_timeout(event_t event_variable, int milliseconds);
 
         [DllImport("ipclib.dll")]
-        public static extern void event_clear_listeners(event_t event_variable);
+        private static extern void event_clear_listeners(event_t event_variable);
 
         [DllImport("ipclib.dll")]
-        public static extern event_handle_t event_get_handle(event_t event_variable);
+        private static extern event_handle_t event_get_handle(event_t event_variable);
         [DllImport("ipclib.dll")]
-        public static extern event_handle_t event_get_handle_duplicate(event_t event_variable, process_handle_t target_process);
+        private static extern event_handle_t event_get_handle_duplicate(event_t event_variable, process_handle_t target_process);
 
         [DllImport("ipclib.dll")]
-        public static extern size_t event_get_handle_int(event_t event_variable);
+        private static extern size_t event_get_handle_int(event_t event_variable);
         [DllImport("ipclib.dll")]
-        public static extern size_t event_get_handle_duplicate_int(event_t event_variable, process_handle_t target_process);
+        private static extern size_t event_get_handle_duplicate_int(event_t event_variable, process_handle_t target_process);
         #endregion
 
-        private event_t event_ptr = 0;
+        public event_t event_ptr = 0;
 
         //Event(Event& other) = delete;
+        public Event(event_t event_ptr)
+        {
+            this.event_ptr = event_ptr;
+        }
         public Event()
         {
             event_ptr = event_create();
@@ -144,6 +143,11 @@ namespace ipclibcs
         public size_t get_handle_duplicate_int(process_handle_t target_process)
         {
             return event_get_handle_duplicate_int(event_ptr, target_process);
+        }
+
+        public override string ToString()
+        {
+            return get_handle_int().ToString();
         }
     }
 }

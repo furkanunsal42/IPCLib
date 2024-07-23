@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Q /E /Y /I &quot;..\build\windows-Release-x86_64IPClibcs\Release\net8.0\*&quot; &quot;..\build\windows-Release-x86_64GraphicsCortexApp\&quot;&#xD;&#xA;xcopy /Q /E /Y /I &quot;..\build\windows-Release-x86_64IPClib\*.dll&quot; &quot;..\build\windows-Release-x86_64GraphicsCortexApp\&quot;&#xD;&#xA;" />
+    <Exec Command="xcopy /Q /E /Y /I &quot;..\build\windows-Release-x86_64IPClibcs\Release\net8.0\*&quot; &quot;..\build\windows-Release-x86_64GraphicsCortexApp\&quot;&#xD;&#xA;xcopy /Q /E /Y /I &quot;..\build\windows-Release-x86_64IPClib\.dll&quot; &quot;..\build\windows-Release-x86_64GraphicsCortexApp\&quot;&#xD;&#xA;" />
   </Target>
 
 </Project>

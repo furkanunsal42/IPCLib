@@ -9,7 +9,7 @@
 #endif
 
 #include <iostream>
-#include "Debuger.h"
+#include "IPCAssert.h"
 
 Event::Event(reset_type type)
 {

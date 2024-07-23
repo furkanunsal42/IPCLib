@@ -1,5 +1,5 @@
 #include "Pipe.h"
-#include "Debuger.h"
+#include "IPCAssert.h"
 
 #include <iostream>
 
@@ -84,7 +84,7 @@ void Pipe::set_event_trigger_condition(int condition_flags)
 bool Pipe::_open(size_t buffer_size_recommendation)
 {
 	bool result;
-
+	
 #ifdef windows
 
 	SECURITY_ATTRIBUTES security = {

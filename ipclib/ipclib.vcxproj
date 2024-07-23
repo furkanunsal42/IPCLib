@@ -24,6 +24,7 @@
     <ProjectGuid>{24eb5bec-c2d0-4c9a-81d0-a3c529f52651}</ProjectGuid>
     <RootNamespace>ipclib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>IPCLib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -46,7 +47,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,6 +71,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\build\windows-Release-x86_64IPCLib\</OutDir>
+    <IntDir>..\build-obj\windows-Release-x86_64IPCLib\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -135,7 +140,7 @@
     <ClCompile Include="Interprocess\ProcessHandleInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Interprocess\Debuger.h" />
+    <ClInclude Include="Interprocess\IPCAssert.h" />
     <ClInclude Include="Interprocess\Event.h" />
     <ClInclude Include="Interprocess\EventInterface.h" />
     <ClInclude Include="Interprocess\Pipe.h" />

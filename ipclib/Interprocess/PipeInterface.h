@@ -48,9 +48,9 @@ extern "C" {
 
 	//Pipe::io_op_result ipc_api pipe_read_and_parse(std::vector<std::string>& out_vector, char* endline_character = "|");
 
-	intptr_t pipe_get_io_event(void* pipe);
-	void pipe_set_io_event(void* pipe, void* external_event);
-	void pipe_set_event_trigger_condition(void* pipe, int condition_flags);
+	intptr_t ipc_api pipe_get_io_event(void* pipe);
+	void ipc_api pipe_set_io_event(void* pipe, void* external_event);
+	void ipc_api pipe_set_event_trigger_condition(void* pipe, int condition_flags);
 
 	//std::ostream& operator<<(std::ostream& o, Pipe& pipe);
 }
