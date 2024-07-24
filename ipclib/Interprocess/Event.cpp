@@ -305,3 +305,9 @@ std::ostream& operator<<(std::ostream& o, Event& event)
 	return o;
 }
 
+std::wostream& operator<<(std::wostream& o, Event& event)
+{
+	o << L"e:" << event.get_handle_int();
+	return o;
+}
+

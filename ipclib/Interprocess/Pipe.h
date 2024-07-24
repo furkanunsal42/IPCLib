@@ -80,36 +80,46 @@ public:
 	const size_t get_write_handle_duplicate_int();
 
 	io_op_result write(const void* source_buffer, size_t buffer_size_in_byte, size_t offset_in_byte = 0, const char* endline_character = "");
-	io_op_result write(std::string source_data, const char* endline_character = "");
-	io_op_result write(std::string source_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result write(const std::string& source_data, const char* endline_character = "");
+	io_op_result write(const std::string& source_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result write(const std::wstring& source_data, const char* endline_character = "");
+	io_op_result write(const std::wstring& source_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
 	template<typename T>
 	io_op_result write(const std::vector<T>& source_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 	template<typename T, int32_t N>
 	io_op_result write(const std::array<T, N>& source_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 
 	io_op_result read(void* target_buffer, size_t buffer_size_in_byte, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result read(void** target_buffer, size_t* buffer_size = nullptr, const char* endline_character = "");
 	io_op_result read(std::string& target_data, const char* endline_character = "");
 	io_op_result read(std::string& target_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result read(std::wstring& target_data, const char* endline_character = "");
+	io_op_result read(std::wstring& target_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
 	template<typename T>
 	io_op_result read(std::vector<T>& target_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 	template<typename T, int32_t N>
 	io_op_result read(std::array<T, N>& target_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 
 	io_op_result peek(void* target_buffer, size_t buffer_size_in_byte, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result peek(void** target_buffer, size_t* buffer_size = nullptr, const char* endline_character = "");
 	io_op_result peek(std::string& target_data, const char* endline_character = "");
 	io_op_result peek(std::string& target_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result peek(std::wstring& target_data, const char* endline_character = "");
+	io_op_result peek(std::wstring& target_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
 	template<typename T>
 	io_op_result peek(std::vector<T>& target_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 	template<typename T, int32_t N>
 	io_op_result peek(std::array<T, N>& target_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 
 	io_op_result update(const void* source_buffer, size_t buffer_size_in_byte, size_t offset_in_byte = 0, const char* endline_character = "");
-	io_op_result update(std::string& source_data, const char* endline_character = "");
-	io_op_result update(std::string& source_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result update(const std::string& source_data, const char* endline_character = "");
+	io_op_result update(const std::string& source_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
+	io_op_result update(const std::wstring& source_data, const char* endline_character = "");
+	io_op_result update(const std::wstring& source_data, size_t string_size_in_bytes, size_t offset_in_byte = 0, const char* endline_character = "");
 	template<typename T>
-	io_op_result update(std::vector<T>& source_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
+	io_op_result update(const std::vector<T>& source_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 	template<typename T, int32_t N>
-	io_op_result update(std::array<T, N>& source_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
+	io_op_result update(const std::array<T, N>& source_vector, size_t offset_in_bytes = 0, const char* endline_character = "");
 
 	io_op_result read_and_parse(std::vector<std::string>& out_vector, const char* endline_character = "|");
 
@@ -190,15 +200,16 @@ inline Pipe::io_op_result Pipe::peek(std::array<T, N>& target_vector, size_t off
 }
 
 template<typename T>
-inline Pipe::io_op_result Pipe::update(std::vector<T>& source_vector, size_t offset_in_bytes, const char* endline_character)
+inline Pipe::io_op_result Pipe::update(const std::vector<T>& source_vector, size_t offset_in_bytes, const char* endline_character)
 {
 	return update((const char*)&(source_vector[0]), source_vector.size() * sizeof(T), offset_in_bytes, endline_character);
 }
 
 template<typename T, int32_t N>
-inline Pipe::io_op_result Pipe::update(std::array<T, N>& source_vector, size_t offset_in_bytes, const char* endline_character)
+inline Pipe::io_op_result Pipe::update(const std::array<T, N>& source_vector, size_t offset_in_bytes, const char* endline_character)
 {
 	return update((const char*)&(source_vector[0]), N * sizeof(T), offset_in_bytes, endline_character);
 }
 
 std::ostream& operator<<(std::ostream& o, Pipe& pipe);
+std::wostream& operator<<(std::wostream& o, Pipe& pipe);

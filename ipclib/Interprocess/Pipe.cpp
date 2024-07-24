@@ -267,14 +267,24 @@ Pipe::io_op_result Pipe::write(const void* source_buffer, size_t buffer_size_in_
 	return result;
 }
 
-Pipe::io_op_result Pipe::write(std::string source_data, const char* endline_character)
+Pipe::io_op_result Pipe::write(const std::string& source_data, const char* endline_character)
 {
 	return write(source_data.c_str(), source_data.size() * sizeof(char), 0, endline_character);
 }
 
-Pipe::io_op_result Pipe::write(std::string source_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
+Pipe::io_op_result Pipe::write(const std::string& source_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
 {
 	return write(source_data.c_str(), string_size_in_bytes, offset_in_byte, endline_character);
+}
+
+Pipe::io_op_result Pipe::write(const std::wstring& source_data, const char* endline_character)
+{
+	return write(source_data.c_str(), source_data.size() * sizeof(wchar_t), 0, endline_character);
+}
+
+Pipe::io_op_result Pipe::write(const std::wstring& source_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
+{
+	return write(source_data.c_str(), source_data.size() * sizeof(wchar_t), 0, endline_character);
 }
 
 Pipe::io_op_result Pipe::read(void* target_buffer, size_t buffer_size_in_byte, size_t offset_in_byte, const char* endline_character)
@@ -309,16 +319,53 @@ Pipe::io_op_result Pipe::read(void* target_buffer, size_t buffer_size_in_byte, s
 	return result;
 }
 
+Pipe::io_op_result Pipe::read(void** target_buffer, size_t* buffer_size, const char* endline_character)
+{
+	if (*target_buffer != nullptr) {
+		std::cout << "[OS Error] Pipe::read() is called but void** target_buffer must point to nullptr" << std::endl;
+		ASSERT(false);
+	}
+	
+	io_op_result result;
+
+	size_t size = get_size();
+	
+	if (size == 0) {
+		result.success = true;
+		result.io_bytes = 0;
+		result.total_bytes = size;
+		return result;
+	}
+
+	*target_buffer = new char[get_size()];
+	io_op_result read_result = read(*target_buffer, size, 0, endline_character);
+	if (buffer_size != nullptr)
+		*buffer_size = size;
+
+	return read_result;
+}
+
 Pipe::io_op_result Pipe::read(std::string& target_data, const char* endline_character)
 {
-	target_data.resize(get_size(), 0);
-	return read(&(*target_data.begin()), target_data.size(), 0, endline_character);;
+	target_data.resize(get_size() / sizeof(char), 0);
+	return read(&(*target_data.begin()), target_data.size() * sizeof(char), 0, endline_character);
 }
 
 Pipe::io_op_result Pipe::read(std::string& target_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
 {
 	target_data.resize(string_size_in_bytes, 0);
+	return read(&(*target_data.begin()), string_size_in_bytes, offset_in_byte, endline_character);
+}
 
+Pipe::io_op_result Pipe::read(std::wstring& target_data, const char* endline_character)
+{
+	target_data.resize(get_size() / sizeof(wchar_t), 0);
+	return read(&(*target_data.begin()), target_data.size() * sizeof(wchar_t), 0, endline_character);
+}
+
+Pipe::io_op_result Pipe::read(std::wstring& target_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
+{
+	target_data.resize(string_size_in_bytes, 0);
 	return read(&(*target_data.begin()), string_size_in_bytes, offset_in_byte, endline_character);
 }
 
@@ -358,12 +405,48 @@ Pipe::io_op_result Pipe::peek(void* target_buffer, size_t buffer_size_in_byte, s
 	return result;
 }
 
+Pipe:: io_op_result Pipe::peek(void** target_buffer, size_t* buffer_size, const char* endline_character)
+{
+	if (*target_buffer != nullptr) {
+		std::cout << "[OS Error] Pipe::peek() is called but void** target_buffer must point to nullptr" << std::endl;
+		ASSERT(false);
+	}
+
+	io_op_result result;
+
+	size_t size = get_size();
+
+	if (size == 0) {
+		result.success = true;
+		result.io_bytes = 0;
+		result.total_bytes = size;
+		return result;
+	}
+
+	*target_buffer = new char[get_size()];
+	io_op_result read_result = peek(*target_buffer, size, 0, endline_character);
+	if (buffer_size != nullptr)
+		*buffer_size = size;
+
+	return read_result;
+}
+
 Pipe::io_op_result Pipe::peek(std::string& target_data, const char* endline_character)
 {
 	return peek(&(target_data.at(0)), target_data.size() * sizeof(char), 0, endline_character);
 }
 
 Pipe::io_op_result Pipe::peek(std::string& target_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
+{
+	return peek(&(target_data.at(0)), string_size_in_bytes, offset_in_byte, endline_character);
+}
+
+Pipe::io_op_result Pipe::peek(std::wstring& target_data, const char* endline_character)
+{
+	return peek(&(target_data.at(0)), target_data.size() * sizeof(wchar_t), 0, endline_character);
+}
+
+Pipe::io_op_result Pipe::peek(std::wstring& target_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
 {
 	return peek(&(target_data.at(0)), string_size_in_bytes, offset_in_byte, endline_character);
 }
@@ -383,21 +466,37 @@ Pipe::io_op_result Pipe::update(const void* source_buffer, size_t buffer_size_in
 	return result;
 }
 
-Pipe::io_op_result Pipe::update(std::string& source_data, const char* endline_character)
+Pipe::io_op_result Pipe::update(const std::string& source_data, const char* endline_character)
 {
 	return update(source_data.c_str(), source_data.size() * sizeof(char), 0, endline_character);
 }
 
-Pipe::io_op_result Pipe::update(std::string& source_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
+Pipe::io_op_result Pipe::update(const std::string& source_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
 {
 	return update(source_data.c_str(), string_size_in_bytes, offset_in_byte, endline_character);
 }
 
-#undef windows
-#undef linux
+Pipe::io_op_result Pipe::update(const std::wstring& source_data, const char* endline_character)
+{
+	return update(source_data.c_str(), source_data.size() * sizeof(wchar_t), 0, endline_character);
+}
+
+Pipe::io_op_result Pipe::update(const std::wstring& source_data, size_t string_size_in_bytes, size_t offset_in_byte, const char* endline_character)
+{
+	return update(source_data.c_str(), string_size_in_bytes, offset_in_byte, endline_character);
+}
 
 std::ostream& operator<<(std::ostream& o, Pipe& pipe)
 {
 	o << "r:" << pipe.get_read_handle_int() << " w:" << pipe.get_write_handle_int();
 	return o;
 }
+
+std::wostream& operator<<(std::wostream& o, Pipe& pipe)
+{
+	o << L"r:" << pipe.get_read_handle_int() << L" w:" << pipe.get_write_handle_int();
+	return o;
+}
+
+#undef windows
+#undef linux

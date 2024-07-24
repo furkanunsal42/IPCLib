@@ -41,14 +41,15 @@ public class Program
 
         pipe_write.set_event_trigger_condition(Pipe.IOEventTriggerCondition.WRITE);
 
-        char[] message = new char[] { 'h', 'e', 'l', 'l', 'o' };
-        pipe_write.write(message, (size_t)message.Length * sizeof(char), 0, "");
+        string message = "hello";
+        pipe_write.write(message.ToArray(), (size_t)message.Length * sizeof(char), 0, "");
 
         byte[] message_incoming = new byte[5];
 
         Thread.Sleep(500);
         pipe_write.read(message_incoming, (size_t)message_incoming.Length * sizeof(byte), 0, "");
         for (int i = 0; i < message_incoming.Length; i++)
+
             Console.Write((char)message_incoming[i]);
         Console.Read();
     }

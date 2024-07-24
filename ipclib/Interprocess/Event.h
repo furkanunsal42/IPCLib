@@ -87,3 +87,4 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& o, Event& event);
+std::wostream& operator<<(std::wostream& o, Event& event);
