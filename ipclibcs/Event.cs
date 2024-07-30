@@ -63,7 +63,7 @@ namespace ipclibcs
         private static extern size_t event_get_handle_duplicate_int(event_t event_variable, process_handle_t target_process);
         #endregion
 
-        public event_t event_ptr = 0;
+        public event_t event_ptr = (event_t)0;
 
         //Event(Event& other) = delete;
         public Event(event_t event_ptr)
@@ -91,7 +91,7 @@ namespace ipclibcs
         ~Event()
         {
             event_destroy(event_ptr);
-            event_ptr = 0;
+            event_ptr = (event_t)0;
         }
 
         public void set_ownership(bool is_event_handle_owned)

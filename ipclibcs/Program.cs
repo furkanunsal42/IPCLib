@@ -1,9 +1,8 @@
 ﻿using ipclibcs;
+using System;
 using System.Diagnostics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
+using System.Linq;
+using System.Threading;
 
 class color
 {

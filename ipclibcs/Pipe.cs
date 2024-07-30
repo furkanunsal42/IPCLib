@@ -83,7 +83,7 @@ namespace ipclibcs
         private static extern void pipe_set_event_trigger_condition(pipe_t pipe, int condition_flags);
         #endregion
 
-        private pipe_t pipe_ptr = 0;
+        private pipe_t pipe_ptr = (pipe_t)0;
 
         public Pipe(pipe_t pipe_ptr)
         {
@@ -118,7 +118,7 @@ namespace ipclibcs
         ~Pipe()
         {
             pipe_destroy(pipe_ptr);
-            pipe_ptr = 0;
+            pipe_ptr = (pipe_t)0;
         }
 
         public void set_ownership(bool is_read_handle_owned, bool is_write_handle_owned)
